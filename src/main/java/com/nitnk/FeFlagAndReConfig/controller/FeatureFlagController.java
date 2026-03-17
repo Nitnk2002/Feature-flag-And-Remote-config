@@ -1,10 +1,35 @@
 package com.nitnk.FeFlagAndReConfig.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.nitnk.FeFlagAndReConfig.entity.FeatureFlagEntity;
+import com.nitnk.FeFlagAndReConfig.services.FeatureFlagService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/feature")
 public class FeatureFlagController {
 
+    @Autowired
+    private FeatureFlagService featureFlagService;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> create(@RequestBody FeatureFlagEntity featureFlagEntity){
+
+        if(featureFlagService.saveFeature (featureFlagEntity)){
+            return new ResponseEntity<> ("Feature Create Successfully..", HttpStatus.CREATED);
+        }
+        return new ResponseEntity<> ("Error During creation!!!",HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<?> getByName(@PathVariable String name){
+        FeatureFlagEntity featureFlagEntity = featureFlagService.findByFeatureName (name);
+        if(featureFlagEntity != null){
+            return new ResponseEntity<> (featureFlagEntity, HttpStatus.OK);
+        }
+        return new ResponseEntity<> ("Error Getting Feature Data!!!",HttpStatus.BAD_REQUEST);
+    }
 }

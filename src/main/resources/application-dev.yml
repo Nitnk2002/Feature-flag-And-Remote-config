@@ -1,0 +1,6 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+      uri: ${MONGODB_URI}
+      database: feature_flag_remote_config
