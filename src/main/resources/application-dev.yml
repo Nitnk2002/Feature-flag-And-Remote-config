@@ -4,3 +4,6 @@ spring:
       auto-index-creation: true
       uri: ${MONGODB_URI}
       database: feature_flag_remote_config
+
+secret:
+  key: "TaK+HaV^uvCHEFsEVfypW#7g9^k*Z8$V"

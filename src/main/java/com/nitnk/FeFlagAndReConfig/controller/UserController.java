@@ -5,6 +5,9 @@ import com.nitnk.FeFlagAndReConfig.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,11 +22,17 @@ public class UserController {
         return new ResponseEntity<> ("Good..", HttpStatus.OK);
     }
 
-    @GetMapping("/user-data/{username}")
-    public ResponseEntity<?> getUser(@PathVariable String username){
-        UserEntity userEntity = userService.getUser (username);
-        if(userEntity != null){
-            return new ResponseEntity<> (userEntity,HttpStatus.OK);
+    @GetMapping("/user-data")
+    public ResponseEntity<?> getUser(){
+        try {
+            Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
+            String username = auth.getName ();
+            UserEntity userEntity = userService.getUser (username);
+            if (userEntity != null) {
+                return new ResponseEntity<> (userEntity, HttpStatus.OK);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException (e);
         }
         return new ResponseEntity<> ("ERROR while getting user",HttpStatus.BAD_REQUEST);
     }

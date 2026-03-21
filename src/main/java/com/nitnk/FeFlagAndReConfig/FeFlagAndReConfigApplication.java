@@ -9,5 +9,4 @@ public class FeFlagAndReConfigApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FeFlagAndReConfigApplication.class, args);
 	}
-
 }

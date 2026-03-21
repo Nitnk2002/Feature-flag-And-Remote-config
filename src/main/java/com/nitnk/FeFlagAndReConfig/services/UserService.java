@@ -3,6 +3,7 @@ package com.nitnk.FeFlagAndReConfig.services;
 import com.nitnk.FeFlagAndReConfig.entity.UserEntity;
 import com.nitnk.FeFlagAndReConfig.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     public void saveEntry(UserEntity userEntity) {
+        userEntity.setPassword (passwordEncoder.encode (userEntity.getPassword ()));
         userEntity.setCreatedAt (LocalDateTime.now ());
         userEntity.setActive (true);
         userEntity.setRole ("ADMIN");
