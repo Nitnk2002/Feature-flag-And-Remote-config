@@ -19,10 +19,35 @@ public class UserService {
         userEntity.setRole ("ADMIN");
         userRepository.save (userEntity);
     }
+    public boolean updateUser(UserEntity userEntity){
+        UserEntity userExist = userRepository.findByUsername (userEntity.getUsername ());
+        if(userExist != null){
+            userExist.setUsername (userEntity.getUsername ());
+            userExist.setPassword (userEntity.getPassword ());
+            userExist.setActive (true);
+            userExist.setCompanyName (userEntity.getCompanyName ());
+            userExist.setEmail (userEntity.getEmail ());
+            userRepository.save (userExist);
+            return true;
+        }
+        return false;
+    }
 
     public boolean checkCredential(UserEntity userEntity) {
         UserEntity user = userRepository.findByUsername (userEntity.getUsername ());
         if(user.getPassword ().equals (userEntity.getPassword ())){
+            return true;
+        }
+        return false;
+    }
+    public UserEntity getUser(String username){
+        return userRepository.findByUsername (username);
+    }
+
+    public boolean deleteUser(String username){
+        UserEntity userEntity = userRepository.findByUsername (username);
+        if(userEntity != null){
+            userRepository.delete (userEntity);
             return true;
         }
         return false;
