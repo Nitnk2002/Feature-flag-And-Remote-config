@@ -1,4 +1,4 @@
-package com.nitnk.FeFlagAndReConfig.model;
+package com.nitnk.FeFlagAndReConfig.utils;
 
 import java.security.SecureRandom;
 import java.util.Base64;

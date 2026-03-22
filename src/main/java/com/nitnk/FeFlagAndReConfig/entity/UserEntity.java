@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class UserEntity {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     @Indexed(unique = true)
     @NonNull
@@ -34,12 +34,7 @@ public class UserEntity {
 
     private boolean active;
 
-    private String apiKey;
-
     private LocalDateTime createdAt;
 
-//    private LocalDateTime updatedAt;
-//
-//    private LocalDateTime lastLogin;
 
 }

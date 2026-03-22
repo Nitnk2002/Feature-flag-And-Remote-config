@@ -16,6 +16,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     public void saveEntry(UserEntity userEntity) {
         userEntity.setPassword (passwordEncoder.encode (userEntity.getPassword ()));
         userEntity.setCreatedAt (LocalDateTime.now ());
@@ -27,7 +28,7 @@ public class UserService {
         UserEntity userExist = userRepository.findByUsername (userEntity.getUsername ());
         if(userExist != null){
             userExist.setUsername (userEntity.getUsername ());
-            userExist.setPassword (userEntity.getPassword ());
+            userExist.setPassword (passwordEncoder.encode (userEntity.getPassword ()));
             userExist.setActive (true);
             userExist.setCompanyName (userEntity.getCompanyName ());
             userExist.setEmail (userEntity.getEmail ());
@@ -37,13 +38,6 @@ public class UserService {
         return false;
     }
 
-    public boolean checkCredential(UserEntity userEntity) {
-        UserEntity user = userRepository.findByUsername (userEntity.getUsername ());
-        if(user.getPassword ().equals (userEntity.getPassword ())){
-            return true;
-        }
-        return false;
-    }
     public UserEntity getUser(String username){
         return userRepository.findByUsername (username);
     }

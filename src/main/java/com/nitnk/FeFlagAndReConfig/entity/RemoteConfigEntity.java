@@ -14,12 +14,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RemoteConfigEntity {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     private String key;
 
     private String value;
 
-    private ObjectId applicationId;
+    private String applicationId;
 
 }

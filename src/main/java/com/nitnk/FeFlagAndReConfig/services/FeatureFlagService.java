@@ -12,14 +12,14 @@ public class FeatureFlagService {
     private FeatureFlagRepository featureFlagRepository;
 
     public boolean saveFeature(FeatureFlagEntity featureFlagEntity){
-        if(featureFlagEntity != null){
+        if(featureFlagEntity != null && featureFlagEntity.getApplicationId () != null){
             featureFlagRepository.save (featureFlagEntity);
             return true;
         }
         return false;
     }
 
-    public FeatureFlagEntity findByFeatureName(String featureName){
-        return featureFlagRepository.findByFeatureName (featureName);
+    public FeatureFlagEntity findByFeatureNameAndApplicationId(String featureName,String applicationId){
+        return featureFlagRepository.findByFeatureNameAndApplicationId (featureName,applicationId);
     }
 }

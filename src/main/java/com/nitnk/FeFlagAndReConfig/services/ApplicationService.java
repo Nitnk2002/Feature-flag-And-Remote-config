@@ -1,9 +1,8 @@
 package com.nitnk.FeFlagAndReConfig.services;
 
 import com.nitnk.FeFlagAndReConfig.entity.ApplicationEntity;
-import com.nitnk.FeFlagAndReConfig.model.ApiKeyGenerator;
+import com.nitnk.FeFlagAndReConfig.utils.ApiKeyGenerator;
 import com.nitnk.FeFlagAndReConfig.repository.ApplicationRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

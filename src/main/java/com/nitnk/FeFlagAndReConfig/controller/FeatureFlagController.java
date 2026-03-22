@@ -2,6 +2,7 @@ package com.nitnk.FeFlagAndReConfig.controller;
 
 import com.nitnk.FeFlagAndReConfig.entity.FeatureFlagEntity;
 import com.nitnk.FeFlagAndReConfig.services.FeatureFlagService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +25,4 @@ public class FeatureFlagController {
         return new ResponseEntity<> ("Error During creation!!!",HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<?> getByName(@PathVariable String name){
-        FeatureFlagEntity featureFlagEntity = featureFlagService.findByFeatureName (name);
-        if(featureFlagEntity != null){
-            return new ResponseEntity<> (featureFlagEntity, HttpStatus.OK);
-        }
-        return new ResponseEntity<> ("Error Getting Feature Data!!!",HttpStatus.BAD_REQUEST);
-    }
 }
