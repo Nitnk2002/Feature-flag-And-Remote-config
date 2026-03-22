@@ -26,14 +26,14 @@ public class SpringSecurity {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http.authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/public/**","/api/client/**").permitAll()
-                        .requestMatchers("/api/user/**","/api/feature/**",
-                                "/api/application/**","/api/config/**").authenticated()
-                        .requestMatchers ("/admin/**").hasRole ("ADMIN")
-                        .anyRequest().permitAll ())
-                .sessionManagement (Customizer.withDefaults ())
+                    .requestMatchers("/public/**", "/client/**").permitAll()
+                    .requestMatchers("/user/**", "/feature/**", "/application/**", "/config/**").authenticated()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated()
+                )
+                .sessionManagement(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .addFilterBefore (jwtFilter , UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
