@@ -21,4 +21,6 @@ public class FeatureFlagEntity {
     private boolean enabled;
 
     private String applicationId;
+
+    private int rolloutPercentage;
 }

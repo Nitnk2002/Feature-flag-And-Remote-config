@@ -1,5 +1,6 @@
 package com.nitnk.FeFlagAndReConfig.controller;
 
+import com.nitnk.FeFlagAndReConfig.dto.request.UserSignupRequest;
 import com.nitnk.FeFlagAndReConfig.entity.UserEntity;
 import com.nitnk.FeFlagAndReConfig.repository.UserRepository;
 import com.nitnk.FeFlagAndReConfig.services.UserService;
@@ -37,21 +38,21 @@ public class PublicController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserEntity userEntity){
-        if(userEntity != null){
-            userService.saveEntry(userEntity);
+    public ResponseEntity<?> signup(@RequestBody UserSignupRequest user){
+        if(user != null){
+            userService.saveEntry(user);
             return new ResponseEntity<> ("You are signup successfully..",HttpStatus.CREATED);
         }
         return new ResponseEntity<> ("Syntax Error..",HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserEntity userEntity){
+    public ResponseEntity<?> login(@RequestBody UserSignupRequest user){
         try{
             authenticationManager.authenticate (
-                    new UsernamePasswordAuthenticationToken (userEntity.getUsername (),userEntity.getPassword ())
+                    new UsernamePasswordAuthenticationToken (user.getUsername (),user.getPassword ())
             );
-            UserDetails userDetails = userDetailsService.loadUserByUsername (userEntity.getUsername ());
+            UserDetails userDetails = userDetailsService.loadUserByUsername (user.getUsername ());
             String jwt = jwtUtil.generateToken (userDetails.getUsername ());
             if(jwt != null){
                     return new ResponseEntity<> ("You Logged in successfully "+"\ntoken : "+jwt,HttpStatus.ACCEPTED);

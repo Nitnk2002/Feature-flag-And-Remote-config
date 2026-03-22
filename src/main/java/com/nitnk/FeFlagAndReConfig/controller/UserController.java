@@ -1,5 +1,7 @@
 package com.nitnk.FeFlagAndReConfig.controller;
 
+import com.nitnk.FeFlagAndReConfig.dto.request.UserSignupRequest;
+import com.nitnk.FeFlagAndReConfig.dto.response.UserProfileResponse;
 import com.nitnk.FeFlagAndReConfig.entity.UserEntity;
 import com.nitnk.FeFlagAndReConfig.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +29,9 @@ public class UserController {
         try {
             Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
             String username = auth.getName ();
-            UserEntity userEntity = userService.getUser (username);
-            if (userEntity != null) {
-                return new ResponseEntity<> (userEntity, HttpStatus.OK);
+            UserProfileResponse user = userService.getUser (username);
+            if (user != null) {
+                return new ResponseEntity<> (user, HttpStatus.OK);
             }
         } catch (Exception e) {
             throw new RuntimeException (e);
@@ -38,8 +40,8 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestBody UserEntity userEntity){
-        if(userService.updateUser (userEntity)){
+    public ResponseEntity<?> updateUser(@RequestBody UserSignupRequest user){
+        if(userService.updateUser (user)){
             return new ResponseEntity<> ("User Date Updated successfully..",HttpStatus.OK);
         }
         return new ResponseEntity<> ("Error while updating...",HttpStatus.BAD_REQUEST);

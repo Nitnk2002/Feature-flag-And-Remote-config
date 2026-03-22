@@ -1,5 +1,6 @@
 package com.nitnk.FeFlagAndReConfig.controller;
 
+import com.nitnk.FeFlagAndReConfig.dto.request.CreateFeatureRequest;
 import com.nitnk.FeFlagAndReConfig.entity.FeatureFlagEntity;
 import com.nitnk.FeFlagAndReConfig.services.FeatureFlagService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +18,10 @@ public class FeatureFlagController {
     private FeatureFlagService featureFlagService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> create(@RequestBody FeatureFlagEntity featureFlagEntity){
+    public ResponseEntity<?> create(@RequestBody CreateFeatureRequest feature){
 
 
-        if(featureFlagService.saveFeature (featureFlagEntity)){
+        if(featureFlagService.saveFeature (feature)){
             return new ResponseEntity<> ("Feature Create Successfully..", HttpStatus.CREATED);
         }
         return new ResponseEntity<> ("Error During creation!!!",HttpStatus.BAD_REQUEST);
