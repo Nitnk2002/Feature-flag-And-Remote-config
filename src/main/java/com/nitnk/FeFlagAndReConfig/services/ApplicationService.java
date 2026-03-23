@@ -28,4 +28,21 @@ public class ApplicationService {
         }
         return null;
     }
+
+    public ApplicationEntity getApiKey(String userId,String appName){
+        if(userId != null && appName != null){
+            return applicationRepository.findByUserIdAndAppName (userId,appName);
+        }
+        return null;
+    }
+
+    public String generateNewApiKey(String userId,String appName){
+        ApplicationEntity applicationEntity = applicationRepository.findByUserIdAndAppName (userId,appName);
+        if(applicationEntity != null){
+            applicationEntity.setApiKey (ApiKeyGenerator.generateApiKey ());
+            applicationRepository.save (applicationEntity);
+            return applicationEntity.getApiKey ();
+        }
+        return null;
+    }
 }

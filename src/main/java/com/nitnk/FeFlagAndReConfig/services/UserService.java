@@ -52,6 +52,11 @@ public class UserService {
         return user;
     }
 
+    public String getUserId(String username){
+        UserEntity userEntity = userRepository.findByUsername (username);
+        return userEntity.getId ();
+    }
+
     public boolean deleteUser(String username){
         UserEntity userEntity = userRepository.findByUsername (username);
         if(userEntity != null){

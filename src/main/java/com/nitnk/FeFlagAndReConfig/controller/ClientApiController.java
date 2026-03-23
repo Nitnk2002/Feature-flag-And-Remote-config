@@ -2,6 +2,7 @@ package com.nitnk.FeFlagAndReConfig.controller;
 
 import com.nitnk.FeFlagAndReConfig.dto.response.FeatureFlagResponse;
 import com.nitnk.FeFlagAndReConfig.entity.FeatureFlagEntity;
+import com.nitnk.FeFlagAndReConfig.exception.ResourceNotFoundException;
 import com.nitnk.FeFlagAndReConfig.services.FeatureFlagService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class ClientApiController {
             flagResponse.setEnabled (flagStatus);
 
             return new ResponseEntity<> (flagResponse, HttpStatus.OK);
+        }else{
+            throw new ResourceNotFoundException ("Feature flag '" + name + "' not found for this application.");
         }
-        return new ResponseEntity<> ("Feature Flag not found for this application Name",HttpStatus.NOT_FOUND);
     }
 }
