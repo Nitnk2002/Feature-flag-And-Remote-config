@@ -1,6 +1,7 @@
 package com.nitnk.FeFlagAndReConfig.services;
 
 import com.nitnk.FeFlagAndReConfig.dto.request.CreateFeatureRequest;
+import com.nitnk.FeFlagAndReConfig.entity.ApplicationEntity;
 import com.nitnk.FeFlagAndReConfig.entity.FeatureFlagEntity;
 import com.nitnk.FeFlagAndReConfig.repository.FeatureFlagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ public class FeatureFlagService {
 
     @Autowired
     private FeatureFlagRepository featureFlagRepository;
+    @Autowired
+    private RedisService redisService;
 
     public boolean saveFeature(CreateFeatureRequest feature){
         if(feature != null && feature.getApplicationId () != null){
@@ -26,7 +29,15 @@ public class FeatureFlagService {
     }
 
     public FeatureFlagEntity findByFeatureNameAndApplicationId(String featureName,String applicationId){
-        return featureFlagRepository.findByFeatureNameAndApplicationId (featureName,applicationId);
+        FeatureFlagEntity redisFlag = redisService.get (featureName+":"+applicationId,FeatureFlagEntity.class);
+        if(redisFlag != null){
+            return redisFlag;
+        }
+        FeatureFlagEntity dbFlag = featureFlagRepository.findByFeatureNameAndApplicationId (featureName,applicationId);
+        if(dbFlag != null) {
+            redisService.set (featureName + ":" + applicationId, dbFlag, 86400L);
+        }
+        return dbFlag;
     }
 
     public boolean isFeatureEnabledForUser(FeatureFlagEntity flag, String targetUserId){
