@@ -28,6 +28,28 @@ public class FeatureFlagService {
         return false;
     }
 
+    public boolean updateFeature(CreateFeatureRequest featureRequest,String applicationId,String featureName){
+        if(featureRequest == null){
+            return false;
+        }
+        FeatureFlagEntity flagEntity = featureFlagRepository.findByFeatureNameAndApplicationId (
+                featureName,
+                applicationId);
+
+        if(flagEntity == null){
+            return false;
+        }
+
+        flagEntity.setFeatureName (featureRequest.getFeatureName ());
+        flagEntity.setEnabled (featureRequest.isEnabled ());
+        flagEntity.setRolloutPercentage (featureRequest.getRolloutPercentage ());
+        featureFlagRepository.save (flagEntity);
+
+        String redisKey = featureName+":" + applicationId;
+        redisService.delete(redisKey);
+        return true;
+
+    }
     public FeatureFlagEntity findByFeatureNameAndApplicationId(String featureName,String applicationId){
         FeatureFlagEntity redisFlag = redisService.get (featureName+":"+applicationId,FeatureFlagEntity.class);
         if(redisFlag != null){
@@ -59,5 +81,16 @@ public class FeatureFlagService {
         int hashValue = (hashString.hashCode () & 0x7fffffff) % 100;
 
         return hashValue < flag.getRolloutPercentage ();
+    }
+
+    public boolean deleteFeature(String featureName, String applicationId) {
+
+        boolean isDeleted = featureFlagRepository.deleteByFeatureNameAndApplicationId(featureName,applicationId);
+        String key = featureName+":"+applicationId;
+        if(isDeleted){
+            redisService.delete (key);
+            return true;
+        }
+        return false;
     }
 }

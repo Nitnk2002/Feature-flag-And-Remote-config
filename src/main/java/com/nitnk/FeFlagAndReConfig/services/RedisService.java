@@ -36,4 +36,17 @@ public class RedisService {
             log.error ("Exception : ",e);
         }
     }
+
+    public void delete(String key) {
+        try {
+            Boolean isDeleted = redisTemplate.delete(key);
+
+            if (isDeleted) {
+                System.out.println("🗑️ Cache Evicted for key: " + key);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Failed to delete cache key: " + key);
+            e.printStackTrace();
+        }
+    }
 }
