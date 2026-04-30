@@ -21,10 +21,10 @@ public class RemoteConfigController {
     private RemoteConfigService remoteConfigService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<RemoteConfigEntity>> getAllConfigs() {
+    public ResponseEntity<List<RemoteConfigEntity>> getAllConfigs(@RequestParam String appId) {
 
         // Fetch all configs from the database
-        List<RemoteConfigEntity> allConfigs = remoteConfigService.getAllConfigs();
+        List<RemoteConfigEntity> allConfigs = remoteConfigService.getAllConfigs(appId);
 
         // Return them to the frontend with a 200 OK status
         return ResponseEntity.ok(allConfigs);

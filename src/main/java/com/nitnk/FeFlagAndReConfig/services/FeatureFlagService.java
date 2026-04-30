@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FeatureFlagService {
@@ -97,6 +98,12 @@ public class FeatureFlagService {
     }
 
     public List<FeatureFlagEntity> getAll(String appId) {
-        return featureFlagRepository.findAll ();
+        List<FeatureFlagEntity> featureFlagEntities = featureFlagRepository.findAll();
+
+        return featureFlagEntities.stream()
+                // Keep only the flags where the database appId matches the requested appId
+                .filter(flag -> flag.getApplicationId().equals(appId))
+                // Repackage them back into a List
+                .collect(Collectors.toList());
     }
 }

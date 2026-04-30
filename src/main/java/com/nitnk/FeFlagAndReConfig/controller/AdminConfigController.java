@@ -18,10 +18,10 @@ public class AdminConfigController {
 
     // This creates the exact endpoint React is looking for: /api/config/all
     @GetMapping("/all")
-    public ResponseEntity<List<RemoteConfigEntity>> getAllConfigs() {
+    public ResponseEntity<List<RemoteConfigEntity>> getAllConfigs(@RequestParam String appId) {
 
         // Fetch all configs from the database
-        List<RemoteConfigEntity> allConfigs = remoteConfigService.getAllConfigs();
+        List<RemoteConfigEntity> allConfigs = remoteConfigService.getAllConfigs(appId);
 
         // Return them to the frontend with a 200 OK status
         return ResponseEntity.ok(allConfigs);

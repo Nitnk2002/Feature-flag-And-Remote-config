@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RemoteConfigService {
@@ -76,8 +77,13 @@ public class RemoteConfigService {
     }
 
     // Add this method inside your RemoteConfigService.java
-    public List<RemoteConfigEntity> getAllConfigs() {
-        // This uses Spring Data MongoDB's built-in findAll() method
-        return remoteConfigRepository.findAll();
+    public List<RemoteConfigEntity> getAllConfigs(String appId) {
+        List<RemoteConfigEntity> featureFlagEntities = remoteConfigRepository.findAll();
+
+        return featureFlagEntities.stream()
+                // Keep only the flags where the database appId matches the requested appId
+                .filter(flag -> flag.getApplicationId().equals(appId))
+                // Repackage them back into a List
+                .collect(Collectors.toList());
     }
 }
