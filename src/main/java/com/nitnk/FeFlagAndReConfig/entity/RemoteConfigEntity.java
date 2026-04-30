@@ -20,6 +20,8 @@ public class RemoteConfigEntity {
 
     private String value;
 
+    private String description;
+
     private String applicationId;
 
 }

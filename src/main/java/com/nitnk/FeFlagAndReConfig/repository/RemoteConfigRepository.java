@@ -6,4 +6,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface RemoteConfigRepository extends MongoRepository<RemoteConfigEntity, String> {
 
     RemoteConfigEntity findByKey(String key);
+    RemoteConfigEntity findByKeyAndApplicationId(String key,String applicationId);
 }
