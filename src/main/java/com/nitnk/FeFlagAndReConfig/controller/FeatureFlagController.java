@@ -2,14 +2,20 @@ package com.nitnk.FeFlagAndReConfig.controller;
 
 import com.nitnk.FeFlagAndReConfig.dto.request.CreateFeatureRequest;
 import com.nitnk.FeFlagAndReConfig.dto.response.FeatureFlagResponse;
+import com.nitnk.FeFlagAndReConfig.entity.ApplicationEntity;
 import com.nitnk.FeFlagAndReConfig.entity.FeatureFlagEntity;
 import com.nitnk.FeFlagAndReConfig.exception.ResourceNotFoundException;
 import com.nitnk.FeFlagAndReConfig.services.FeatureFlagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -18,6 +24,16 @@ public class FeatureFlagController {
 
     @Autowired
     private FeatureFlagService featureFlagService;
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(@RequestParam String appId){
+        List<FeatureFlagEntity> featureList = new ArrayList<> ();
+        featureList = featureFlagService.getAll(appId);
+        if(featureList != null){
+            return new ResponseEntity<> (featureList,HttpStatus.OK);
+        }
+        throw new ResourceNotFoundException ("ERROR : Not found any feature");
+    }
 
     @PostMapping("/create")
     public ResponseEntity<?> create(@RequestBody CreateFeatureRequest feature){

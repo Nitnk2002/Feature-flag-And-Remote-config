@@ -7,6 +7,8 @@ import com.nitnk.FeFlagAndReConfig.repository.FeatureFlagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FeatureFlagService {
 
@@ -92,5 +94,9 @@ public class FeatureFlagService {
             return true;
         }
         return false;
+    }
+
+    public List<FeatureFlagEntity> getAll(String appId) {
+        return featureFlagRepository.findAll ();
     }
 }
