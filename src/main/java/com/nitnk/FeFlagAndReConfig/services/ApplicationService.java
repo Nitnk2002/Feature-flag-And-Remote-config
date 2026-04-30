@@ -6,6 +6,8 @@ import com.nitnk.FeFlagAndReConfig.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ApplicationService {
 
@@ -21,8 +23,8 @@ public class ApplicationService {
         return null;
     }
 
-    public ApplicationEntity searchByUserId(String userId){
-        ApplicationEntity applicationEntity =  applicationRepository.findByUserId (userId);
+    public List<ApplicationEntity> searchByUserId(String userId){
+        List<ApplicationEntity> applicationEntity =  applicationRepository.findByUserId (userId);
         if(applicationEntity != null){
             return applicationEntity;
         }
@@ -44,5 +46,9 @@ public class ApplicationService {
             return applicationEntity.getApiKey ();
         }
         return null;
+    }
+
+    public List<ApplicationEntity> getAll(String userId) {
+        return applicationRepository.findByUserId (userId);
     }
 }

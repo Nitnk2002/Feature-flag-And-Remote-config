@@ -11,6 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/application")
 public class ApplicationController {
@@ -20,6 +23,18 @@ public class ApplicationController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll(){
+        List<ApplicationEntity> appList = new ArrayList<> ();
+        Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
+        String username = auth.getName ();
+        String userId = userService.getUserId (username);
+        appList = applicationService.getAll(userId);
+        if(appList != null){
+            return new ResponseEntity<> (appList,HttpStatus.OK);
+        }
+        throw new ResourceNotFoundException ("ERROR : Not found any Application");
+    }
     @PostMapping("/create")
     public ResponseEntity<?> createApplication(@RequestBody ApplicationEntity applicationEntity){
         Authentication auth = SecurityContextHolder.getContext ().getAuthentication ();
@@ -35,7 +50,7 @@ public class ApplicationController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<?> searchByUserId(@PathVariable String userId){
-        ApplicationEntity applicationEntity = applicationService.searchByUserId (userId);
+        List<ApplicationEntity> applicationEntity = applicationService.searchByUserId (userId);
 
         if (applicationEntity != null){
             return new ResponseEntity<> (applicationEntity,HttpStatus.OK);
