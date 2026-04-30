@@ -55,7 +55,7 @@ public class PublicController {
             UserDetails userDetails = userDetailsService.loadUserByUsername (user.getUsername ());
             String jwt = jwtUtil.generateToken (userDetails.getUsername ());
             if(jwt != null){
-                    return new ResponseEntity<> ("You Logged in successfully "+"\ntoken : "+jwt,HttpStatus.ACCEPTED);
+                    return new ResponseEntity<> (jwt,HttpStatus.ACCEPTED);
             }
         } catch (Exception e) {
             return new ResponseEntity<> ("Your username or password is wrong",HttpStatus.NOT_FOUND);
